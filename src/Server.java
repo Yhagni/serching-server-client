@@ -8,7 +8,7 @@ import java.security.Security;
 
 public class Server extends Thread
 {
-    public static void main(String args[])
+    public static void main(String[] args)
     {
         int port = 35786;
 
