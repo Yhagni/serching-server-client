@@ -19,7 +19,7 @@ public class Server extends Thread
         try {
             SSLServerSocketFactory sslServerSocketfactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
             SSLServerSocket sslServerSocket = (SSLServerSocket) sslServerSocketfactory.createServerSocket(port);
-            System.out.println("Echo Server Started & Ready to accept Client Connection");
+            System.out.println("Server started and is waiting for clients!");
 
             while (true) {
                 SSLSocket sslSocket = (SSLSocket) sslServerSocket.accept();
