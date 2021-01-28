@@ -8,14 +8,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
-import java.util.PrimitiveIterator;
 
 public class XmlReader {
 
@@ -58,70 +56,56 @@ public class XmlReader {
     }
 
     public boolean isTheSameUser(String login) {
-        try {
-            doc.getDocumentElement().normalize();
-            doc.getDocumentElement().getNodeName();
-            NodeList nodeList = doc.getElementsByTagName("user");
-            for (int itr = 0; itr < nodeList.getLength(); itr++) {
-                Node node = nodeList.item(itr);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element eElement = (Element) node;
-                    if (login.equals(eElement.getElementsByTagName("username").item(0).getTextContent())) {
-                        return true;
-                    }
+
+        doc.getDocumentElement().normalize();
+        doc.getDocumentElement().getNodeName();
+        NodeList nodeList = doc.getElementsByTagName("user");
+        for (int itr = 0; itr < nodeList.getLength(); itr++) {
+            Node node = nodeList.item(itr);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) node;
+                if (login.equals(eElement.getElementsByTagName("username").item(0).getTextContent())) {
+                    return true;
                 }
             }
         }
-        catch(Exception e)
-            {
-                e.printStackTrace();
-            }
+
+
         return false;
     }
 
-    public boolean logIn(String login,String password){
-        try {
-            doc.getDocumentElement().normalize();
-            doc.getDocumentElement().getNodeName();
-            NodeList nodeList = doc.getElementsByTagName("user");
-            for (int itr = 0; itr < nodeList.getLength(); itr++) {
-                Node node = nodeList.item(itr);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element eElement = (Element) node;
-                    if (login.equals(eElement.getElementsByTagName("username").item(0).getTextContent()) && password.equals(eElement.getElementsByTagName("password").item(0).getTextContent())) {
-                        return true;
-                    }
+    public boolean logIn(String login, String password) {
+
+        doc.getDocumentElement().normalize();
+        doc.getDocumentElement().getNodeName();
+        NodeList nodeList = doc.getElementsByTagName("user");
+        for (int itr = 0; itr < nodeList.getLength(); itr++) {
+            Node node = nodeList.item(itr);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) node;
+                if (login.equals(eElement.getElementsByTagName("username").item(0).getTextContent()) && password.equals(eElement.getElementsByTagName("password").item(0).getTextContent())) {
+                    return true;
                 }
             }
         }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
+
         return false;
     }
 
-    public String passwordReminder(String login){
+    public String passwordReminder(String login) {
 
-        try {
-            doc.getDocumentElement().normalize();
-            doc.getDocumentElement().getNodeName();
-            NodeList nodeList = doc.getElementsByTagName("user");
-            for (int itr = 0; itr < nodeList.getLength(); itr++) {
-                Node node = nodeList.item(itr);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element eElement = (Element) node;
-                    if (login.equals(eElement.getElementsByTagName("username").item(0).getTextContent())) {
-                        return eElement.getElementsByTagName("password").item(0).getTextContent();
-                    }
+        doc.getDocumentElement().normalize();
+        doc.getDocumentElement().getNodeName();
+        NodeList nodeList = doc.getElementsByTagName("user");
+        for (int itr = 0; itr < nodeList.getLength(); itr++) {
+            Node node = nodeList.item(itr);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) node;
+                if (login.equals(eElement.getElementsByTagName("username").item(0).getTextContent())) {
+                    return eElement.getElementsByTagName("password").item(0).getTextContent();
                 }
             }
         }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
         return "";
     }
 

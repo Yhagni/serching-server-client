@@ -2,14 +2,12 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
-import java.security.Security;
 import java.util.Scanner;
-//import com.sun.net.ssl.internal.ssl.Provider;
+import java.security.Provider;
+import java.security.Security;
 
 public class Client
 {
-
-
     public static void main(String[] args)
     {
         int serverPort = 35786;
@@ -17,8 +15,8 @@ public class Client
 
         System.setProperty("javax.net.ssl.trustStore","myTrustStore.jts");
         System.setProperty("javax.net.ssl.trustStorePassword","123qwerty");
-        //Security.addProvider(new Provider());
-        //System.setProperty("javax.net.debug","all");
+        Provider provider = Security.getProvider("SUN");
+        Security.addProvider(provider);
         try
         {
             SSLSocketFactory sslsocketfactory = (SSLSocketFactory)SSLSocketFactory.getDefault();
@@ -43,8 +41,6 @@ public class Client
                     outputStream.writeUTF(login);
                     outputStream.writeUTF(password);
                     System.out.println(inputStream.readUTF());
-                } else if (option.equals("close")) {
-                    break;
                 }else if (option.equals("login")) {
                     System.out.println("Login : ");
                     String login = scanner.nextLine();
@@ -58,15 +54,22 @@ public class Client
                     String login = scanner.nextLine();
                     outputStream.writeUTF(login);
                     System.out.println(inputStream.readUTF());
+                }else if (option.equals("search")) {
+                    String response = inputStream.readUTF();
+                    System.out.println(response);
+                    if(!response.equals("You are not logged in!")) {
+                        String phrase = scanner.nextLine();
+                        outputStream.writeUTF(phrase);
+                        System.out.println(inputStream.readUTF());
+                    }
+                }else if (option.equals("close")) {
+                    System.out.println(inputStream.readUTF());
+                    break;
+                }
+                else {
+                    System.out.println("There is no such commend");
                 }
 
-
-
-//                System.err.println(inputStream.readUTF());
-//                if(messageToSend.equals("close"))
-//                {
-//                    break;
-//                }
             }
         }
         catch(Exception ex)

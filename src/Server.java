@@ -1,10 +1,9 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
 import java.security.Provider;
 import java.security.Security;
+
 
 public class Server extends Thread
 {
@@ -14,8 +13,8 @@ public class Server extends Thread
 
         System.setProperty("javax.net.ssl.keyStore","myKeyStore.jks");
         System.setProperty("javax.net.ssl.keyStorePassword","123qwerty");
-        //Security.addProvider("SUN");
-        //System.setProperty("javax.net.debug","all");
+        Provider provider = Security.getProvider("SUN");
+        Security.addProvider(provider);
         try {
             SSLServerSocketFactory sslServerSocketfactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
             SSLServerSocket sslServerSocket = (SSLServerSocket) sslServerSocketfactory.createServerSocket(port);
