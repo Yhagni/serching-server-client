@@ -3,11 +3,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.*;
 import java.io.IOException;
+
 
 public class Finder {
 
@@ -28,16 +30,23 @@ public class Finder {
     public String findPhrase(String phrase) throws XPathExpressionException {
         StringBuilder list = new StringBuilder();
         XPathExpression expr = xpath.compile("//book/*//text()[contains(.,'" + phrase + "')]/../..");
-
         NodeList nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
-        for (int i = 0; i < nodes.getLength(); i++) {
+
+        int loop = nodes.getLength();
+        if (loop > 10)
+        {
+            loop = 10;
+        }
+        for (int i = 0; i < loop; i++) {
             Node node = nodes.item(i);
-            Element element = (Element)node;
-            list.append("Author: ").append(element.getElementsByTagName("author").item(0).getTextContent()).append("\n");
-            list.append("Title: ").append(element.getElementsByTagName("title").item(0).getTextContent()).append("\n");
-            list.append("Description: ").append(element.getElementsByTagName("desc").item(0).getTextContent()).append("\n");
+            Element element = (Element) node;
+            list.append("Author: " + element.getElementsByTagName("author").item(0).getTextContent() + "\n");
+            list.append("Title: " + element.getElementsByTagName("title").item(0).getTextContent() + "\n");
+            list.append("Description: " + element.getElementsByTagName("desc").item(0).getTextContent() + "\n");
 
         }
+
+
         return list.toString();
     }
 

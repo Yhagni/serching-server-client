@@ -10,6 +10,8 @@ public class Client
 {
     public static void main(String[] args)
     {
+
+        boolean isLoggedIn = false;
         int serverPort = 35786;
         String serverName = "localhost";
 
@@ -42,16 +44,32 @@ public class Client
                     outputStream.writeUTF(password);
                     System.out.println(inputStream.readUTF());
                 }else if (option.equals("login")) {
-                    System.out.println("Login : ");
-                    String login = scanner.nextLine();
-                    System.out.println("Password : ");
-                    String password = scanner.nextLine();
-                    outputStream.writeUTF(login);
-                    outputStream.writeUTF(password);
-                    System.out.println(inputStream.readUTF());
+                    if(!isLoggedIn)
+                    {
+                        System.out.println("Login : ");
+                        String login = scanner.nextLine();
+                        System.out.println("Password : ");
+                        String password = scanner.nextLine();
+                        outputStream.writeUTF(login);
+                        outputStream.writeUTF(password);
+                        String correctData = inputStream.readUTF();
+                        if(correctData.equals("You are logged in!")){
+                            System.out.println(correctData);
+                            isLoggedIn = true;
+                        }
+                        else
+                        {
+                            System.out.println(correctData);
+                        }
+                    }
+                    else {
+                        System.out.println(inputStream.readUTF());
+                    }
+
                 }else if (option.equals("remind")) {
                     System.out.println("Login : ");
                     String login = scanner.nextLine();
+                    outputStream.writeUTF(login);
                     outputStream.writeUTF(login);
                     System.out.println(inputStream.readUTF());
                 }else if (option.equals("search")) {
@@ -61,20 +79,25 @@ public class Client
                         String phrase = scanner.nextLine();
                         outputStream.writeUTF(phrase);
                         System.out.println(inputStream.readUTF());
+                        int size = Integer.parseInt(inputStream.readUTF());
+                        if (size > 10) {
+                            System.out.println("These are top 10 of them: ");
+                        }
+                        System.out.println(inputStream.readUTF());
                     }
                 }else if (option.equals("close")) {
                     System.out.println(inputStream.readUTF());
                     break;
                 }
                 else {
-                    System.out.println("There is no such commend");
+                    System.out.println("There is no such command");
                 }
 
             }
         }
         catch(Exception ex)
         {
-            System.err.println("Error: "+ex.toString());
+            System.out.println("Server refused connection, sorry!");
         }
     }
 }

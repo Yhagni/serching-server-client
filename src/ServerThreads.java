@@ -8,6 +8,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+
 public class ServerThreads extends Thread {
 
     private SSLSocket sslSocket;
@@ -42,14 +43,20 @@ public class ServerThreads extends Thread {
                         outputStream.writeUTF("This user already exists!");
                     }
                 } else if (option.equals("login")) {
-                    String login = inputStream.readUTF();
-                    String password = inputStream.readUTF();
-                    if (xmlReader.logIn(login, password)) {
-                        outputStream.writeUTF("You are logIn!");
-                        isLoggedIn = true;
-                    } else {
-                        outputStream.writeUTF("Your login data are incorrect!");
+                    if(!isLoggedIn)
+                    {
+                        String login = inputStream.readUTF();
+                        String password = inputStream.readUTF();
+                        if (xmlReader.logIn(login, password)) {
+                            outputStream.writeUTF("You are logged in!");
+                            isLoggedIn = true;
+                        } else {
+                            outputStream.writeUTF("Your login data are incorrect!");
+                        }
+                    }else {
+                        outputStream.writeUTF("You are already logged in!");
                     }
+
                 } else if (option.equals("remind")) {
                     String login = inputStream.readUTF();
                     if (!xmlReader.passwordReminder(login).equals("")) {
@@ -61,12 +68,10 @@ public class ServerThreads extends Thread {
                     if (isLoggedIn) {
                         outputStream.writeUTF("Put phrase which are You searching");
                         String phrase = inputStream.readUTF();
-                        outputStream.writeUTF("This is top 10 results: \n");
-                        while (finder.howManyFoundPhrases(phrase) < 10)
-                        {
-                            outputStream.writeUTF(finder.findPhrase(phrase));
-                        }
-                        System.out.println("There was " + finder.howManyFoundPhrases(phrase) + " matches with the given phrase");
+                        outputStream.writeUTF("There was " + finder.howManyFoundPhrases(phrase) + " matches with the given phrase");
+                        outputStream.writeUTF(Integer.toString(finder.howManyFoundPhrases(phrase)));
+                        outputStream.writeUTF(finder.findPhrase(phrase));
+                        System.out.println(finder.howManyFoundPhrases(phrase) + " matches was found");
                     } else {
                         outputStream.writeUTF("You are not logged in!");
                     }

@@ -28,7 +28,7 @@ public class Server extends Thread
         }
         catch(Exception ex)
         {
-            System.err.println("Error Happened : "+ex.toString());
+            System.out.println("User ended connection");
         }
     }
 }
